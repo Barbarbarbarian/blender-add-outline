@@ -1,11 +1,14 @@
 Add Outlines in Blender
 ======================
 
-The addon allows you to add NPR/Cartoonish outlines in one click.
+The addon allows you to add outlines in one click.
 
-Unlike Freestyle, this method works in eevee as well as cycles engine.
+* Works with both Eevee and Cycles Engine;
+* Outlines can glow or be cartoonish;
+* Each object's outline's glow strength can be adjusted individually without creating dulipcated materials, by changing an object custom property. 
 
-![Demo image with a egg shape object with an outline](resource/example.png)
+
+![Adjusting Strength](resource/AdjustEmissionStrength.gif)
 
 ## How to
 
@@ -13,6 +16,8 @@ Edit -> Preferences -> Addon -> Install and select `add_outline.py`. After its i
 enable it and in the addon settings select the path for `toon_outline.blend`.
 
 After this, you can select multiple objects and go Object->Add Outline. 
+
+The "glowing" of the outline can be adjusted via an object custom property named "outline".
 
 
 ## What does it do:

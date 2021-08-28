@@ -2,9 +2,9 @@
 bl_info = {
     "name": "Outline",
     "description": "Add NPR/cartoon outline to an object that works in eevee and cycles",
-    "author": "Azeem Bande-Ali",
-    "version": (0, 1),
-    "blender": (2, 90),
+    "author": "cyberMaestro, Azeem Bande-Ali",
+    "version": (0, 2),
+    "blender": (2, 93),
     "category": "Material"
 }
 
@@ -18,20 +18,21 @@ def get_path_to_blendfile(context):
     return addon_prefs.source
 
 
-def main(context):
+def main(context, thickness):
     """Handles the user action to actually add outline to object"""
     material_name = "ToonOutline"
     filepath = get_path_to_blendfile(context)
     for obj in context.selected_objects:
-        add_modifier(obj)
+        obj["outline"] = 1.0
+        add_modifier(obj, thickness)
         add_outline_material(obj, filepath, material_name)
 
 
-def add_modifier(obj):
+def add_modifier(obj, thickness):
     """Add the solidify modifier to object"""
     obj.modifiers.new("Outline", "SOLIDIFY")
     modifier = obj.modifiers["Outline"]
-    modifier.thickness = 0.01
+    modifier.thickness = thickness
     modifier.use_rim = False
     modifier.offset = 1
     modifier.use_flip_normals = True
@@ -67,9 +68,10 @@ class AddOutlineOperator(Operator):
     bl_idname = "object.add_outline"
     bl_label = "Add Outline"
     bl_options = {'REGISTER', 'UNDO'} 
+    thickness: bpy.props.FloatProperty(name="Thickness",default=0.01)
 
     def execute(self, context):
-        main(context)
+        main(context, self.thickness)
         return {'FINISHED'}
 
 def menu_func(self, context):
@@ -78,7 +80,7 @@ def menu_func(self, context):
 class OutlinePreferences(AddonPreferences):
 
     bl_idname = __name__
-    source = StringProperty(
+    source: StringProperty(
         name="Blend file",
         subtype="FILE_PATH")
     
